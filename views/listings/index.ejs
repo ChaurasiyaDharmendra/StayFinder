@@ -1,0 +1,125 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+    <div class="index">
+    <div id="filters-wrapper">
+        <div class="d-flex align-items-center mt-3 border rounded px-2 py-1">
+                <div><i class="fa-solid fa-filter fa-lg me-1"></i></div>
+                <p class="mb-0 small">Filters</p>
+        </div>
+        <div id="filters" class="d-flex overflow-auto align-items-center px-3 py-2">
+            <!-- Filter Item -->
+            <a href="/listings?category=Trending">
+                <div class="filter text-center flex-shrink-0">
+                    <div><i class="fa-solid fa-fire fa-lg"></i></div>
+                    <p class="mb-0 small">Trending</p>
+                </div>
+            </a>
+            <a href="/listings?category=Rooms">
+                <div class="filter text-center flex-shrink-0">
+                    <div><i class="fa-solid fa-bed fa-lg"></i></div>
+                    <p class="mb-0 small">Rooms</p>
+                </div>
+            </a>
+            <a href="/listings?category=Mountain">
+                <div class="filter text-center flex-shrink-0">
+                    <div><i class="fa-solid fa-mountain fa-lg"></i></div>
+                    <p class="mb-0 small">Mountain</p>
+                </div>
+            </a>
+            <a href="/listings?category=Castles">
+                <div class="filter text-center flex-shrink-0">
+                    <div><i class="fa-brands fa-fort-awesome fa-lg"></i></div>
+                    <p class="mb-0 small">Castles</p>
+                </div>
+            </a>
+            <a href="/listings?category=Pool">
+                <div class="filter text-center flex-shrink-0">
+                    <div><i class="fa-solid fa-person-swimming fa-lg"></i></div>
+                    <p class="mb-0 small">Pool</p>
+                </div>
+            </a>
+            <a href="/listings?category=Camping">
+                <div class="filter text-center flex-shrink-0">
+                    <div><i class="fa-solid fa-campground fa-lg"></i></div>
+                    <p class="mb-0 small">Camping</p>
+                </div>
+            </a>
+            <a href="/listings?category=Farms">
+                <div class="filter text-center flex-shrink-0">
+                    <div><i class="fa-solid fa-cow fa-lg"></i></div>
+                    <p class="mb-0 small">Farms</p>
+                </div>
+            </a>
+            <a href="/listings?category=Arctic">
+                <div class="filter text-center flex-shrink-0">
+                    <div><i class="fa-solid fa-snowflake fa-lg"></i></div>
+                    <p class="mb-0 small">Arctic</p>
+                </div>
+            </a>
+            <a href="/listings?category=Boat">
+                <div class="filter text-center flex-shrink-0">
+                    <div><i class="fa-solid fa-sailboat fa-lg"></i></div>
+                    <p class="mb-0 small">Boat</p>
+                </div>
+            </a>
+        </div>
+
+        
+    </div>
+    <!-- Tax Toggle -->
+        <% if(allListings.length > 0) { %>
+            <div class="tax-toggle">
+                <div class="form-check form-switch form-check-reverse">
+                    <input class="form-check-input" type="checkbox" id="switchCheckReverse">
+                    <label class="form-check-label" for="switchCheckReverse">Show taxes</label>
+                </div>
+            </div>
+        <% } %>
+        
+        <% if (category && allListings.length > 0) { %>
+            <h5 class="ms-3">Showing listings for: <b><%= category %></b></h5>
+        <% } else if (category && allListings.length === 0) { %>
+            <h5>No listing found for: <b><%= category %></b></h5>
+            <a href="/listings" style="text-decoration: none;"><i>Go to home page</i></a>
+        <% } %>
+
+        
+        <% if (searchQuery && allListings.length === 0) { %>
+            <h5>No listing found for "<%= searchQuery %>"</h5>
+            <a href="/listings" style="text-decoration: none;"><i>Go to home page</i></a>
+        <% } %>
+
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-2 listing-row">
+        <% for(list of allListings) { %>
+            <a href="/listings/<%= list._id %>" class="listing-links">
+                <div class="card col listing-card">
+                    <img src="<%= list.image.url %>" class="card-img-top" alt="listing-image" style="height: 20rem;">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b><%= list.title %></b><br>
+                            &#x20B9; <%= list.price.toLocaleString("en-IN") %> / Day
+                            <i class="tax-info">&nbsp; &nbsp;+&#x20B9;<%= 0.18*list.price %> GST</i>
+                        </p>
+                    </div>
+                </div>
+            </a>
+            
+        <% } %>
+        </div>
+    </div>
+</body>
+
+<script>
+    let taxSwitch = document.getElementById("switchCheckReverse");
+    taxSwitch.addEventListener("click", () => {
+        let taxInfo = document.getElementsByClassName("tax-info");
+        for(info of taxInfo) {
+            if(info.style.display != "inline")
+                info.style.display = "inline";
+            else
+                info.style.display = "none";
+        }
+    })
+</script>
